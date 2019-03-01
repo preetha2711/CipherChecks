@@ -1,4 +1,8 @@
 # CipherChecks
-Ceasar Cipher and Vigenere Cipher
-This repository contains codes to crack both the vignere cipher and the caesar cipher
+
+This repository contains the following ciphers : 
+
+1. Caesar Cipher
+2. Vignere Cipher
+3. Advanced Encryption Standard
 
