@@ -48,13 +48,45 @@ def getKeySchedule(key):
     :param key: 128 bit master key
     :return: key schedule
     """
+    temp_keys = 44 * [None]
     key_schedule = byte2array(key)
+    for i in range(len(key_schedule)):
+        if i%4==0:
+            temp = key_schedule[i]
+            for j in range(0,len(temp_keys),4):
+                temp_keys[j] = temp
+                
+                temp = [temp[-1]] + temp[:3] 
+        
+        if i%4==1:
+            temp = key_schedule[i]
+            for j in range(1,len(temp_keys),4):
+                temp_keys[j] = temp
+                
+                temp = [temp[-1]] + temp[:3] 
 
-    # Code here
+        
+        if i%4==2:
+            temp = key_schedule[i]
+            for j in range(2,len(temp_keys),4):
+                temp_keys[j] = temp
+                
+                temp = [temp[-1]] + temp[:3] 
+
+        
+        if i%4==3:
+            temp = key_schedule[i]
+            for j in range(3,len(temp_keys),4):
+                temp_keys[j] = temp
+                
+                temp = [temp[-1]] + temp[:3] 
+
+
+    key_schedule = temp_keys
 
     return key_schedule
 
-
+global glob_state_ar 
 def encrypt(plaintext, key_schedule):
     """Encrypts plaintext using key schedule
     :param plaintext: plaintext in hex
@@ -62,6 +94,29 @@ def encrypt(plaintext, key_schedule):
     :return: ciphertext in hex
     """
     state_array = byte2array(plaintext)
+    round_0 = []
+    round_0.extend([key_schedule[0],key_schedule[1],key_schedule[2],key_schedule[3]])
+    ADD_ROUND_KEY(state_array,round_0)
+    count = 0
+    temp = []
+    temp_key_sched = []
+
+    for i in range(4,44):    
+        temp.append(key_schedule[i])
+        count += 1 
+
+        if count % 4 == 0 :
+            temp_key_sched.append(temp)
+            count = 0
+            temp = []
+    words = temp_key_sched
+
+
+
+    for i in words:
+        a = SUBSTITUTE_BYTES(state_array)
+        b = SHIFT_ROWS(a)
+        state_array = ADD_ROUND_KEY(b,i)
 
     # Code here
 
@@ -74,7 +129,10 @@ def ADD_ROUND_KEY(state_array, key_array):
     :param key_array: key array
     :return: none
     """
-    # Code here
+    for i in range(4):
+        for j in range(4):
+            state_array[i][j] = state_array[i][j] ^ key_array[i][j]
+    return state_array
 
 
 def SUBSTITUTE_BYTES(state_array):
@@ -83,7 +141,16 @@ def SUBSTITUTE_BYTES(state_array):
     :param key_array: key array
     :return: none
     """
-    # Code here
+    temp_state_arr = []
+    for i in range(len(state_array)):
+        temp = []
+        for j in (state_array[i]):
+            
+            temp.append(SBOX[j])
+        temp_state_arr.append(temp)
+    
+    state_array = temp_state_arr
+    return state_array
 
 
 def SHIFT_ROWS(state_array):
@@ -92,8 +159,42 @@ def SHIFT_ROWS(state_array):
     :param key_array: key array
     :return: none
     """
-    # Code here
+    temp_arr_single = [None] * 4
+    temp_arr = [[None,None,None,None] for i in range(4)]
 
+
+    for i in range(4):
+        for j in range(4):
+            temp_arr[j][i] = state_array[i][j]
+          
+    
+    state_array = temp_arr
+    temp_state_arr = []
+    for i in range(len(state_array)):
+        if i%4==0:
+            temp = state_array[i]   
+            temp_state_arr.append(temp)
+        if i%4==1:
+            temp = state_array[i]
+            temp = temp[1:] + [temp[0]]
+            temp_state_arr.append(temp)
+        if i%4==2:
+            temp = state_array[i]
+            temp = temp[2:] + temp[:-2]
+            temp_state_arr.append(temp)
+        if i%4==3:
+            temp = state_array[i]
+            temp = [temp[-1]] + temp[:3]
+            temp_state_arr.append(temp)
+
+    for i in range(4):
+        for j in range(4):
+            state_array[j][i] = temp_state_arr[i][j]
+
+    return state_array
+   
+
+# print(SHIFT_ROWS([[i,i+1,i+2,i+3] for i in range(0,16,4)]))
 
 key = "7750f228896eb4561b9cd67497aad0b1"
 key_schedule = getKeySchedule(bytes.fromhex(key))
@@ -102,6 +203,7 @@ plaintext = ["27153a16906ef425d078796f71569cbe",
              "b6f2d9b55d607b9a3e23cb4b9e133a18",
              "1a9d31f65a985ae9dfb6344cc90ec75b",
              "4e90a7cd0d8bce7285161377f0fd6fca"]
+
 
 ciphertext = []
 
