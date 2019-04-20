@@ -21,7 +21,7 @@ print check_EC(8,2)
 
 def inv_mod(x):
     if x % p == 0 :
-       return ("Inverse does not exist")
+       return ("Inverse does not exist ")
     return pow(x,p-2,p)
 
 def neg_pts_EC(x1,y1):
@@ -29,8 +29,8 @@ def neg_pts_EC(x1,y1):
     return x1, y1
 
 def read_EC_point():
-    x = int(raw_input("enter x"))
-    y = int(raw_input("enter y"))
+    x = int(raw_input("enter x "))
+    y = int(raw_input("enter y "))
 
     return x,y
 
@@ -45,10 +45,11 @@ def add_EC(x1,y1,x2,y2):
     if (y2 - y1 % p == 0 ):
         return 0
 
-    slope = ((y2-y1) * inv_mod(x2 - x1)) % p
-    print "slope is " , slope
+    slope = (y2-y1) * inv_mod(x2 - x1)
+    # print "slope is " , slope
     x_new = (pow(slope,2) - x1 - x2)%p
-    y_new = (slope*(x1-x_new) - x2)%p
+    # print x_new
+    y_new = (slope * (x1-x_new) - y1)%p
 
     return (x_new, y_new)
 
@@ -59,8 +60,10 @@ def subtract_EC(x1,y1,x2,y2):
     x_sub,y_sub = add_EC(x1,y1,x2,y2)
 
     return x_sub, y_sub
+print subtract_EC(x1,y1,x2,y2)
 
+def point_double(k,x1,y1):
 
-
+    
 
 
