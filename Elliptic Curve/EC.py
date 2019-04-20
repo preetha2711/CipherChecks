@@ -29,22 +29,22 @@ def neg_pts_EC(x1,y1):
     return x1, y1
 
 def read_EC_point():
-
     x = int(raw_input("enter x"))
     y = int(raw_input("enter y"))
 
     return x,y
+
+
 p,a,b = read_EC_param()
 x1,y1 = read_EC_point()
 x2,y2 = read_EC_point()
 
 # print inv_mod(x2-x1)
 def add_EC(x1,y1,x2,y2):
-
     ##ADD CORNER CASES##
-
     if (y2 - y1 % p == 0 ):
         return 0
+
     slope = ((y2-y1) * inv_mod(x2 - x1)) % p
     print "slope is " , slope
     x_new = (pow(slope,2) - x1 - x2)%p
@@ -55,7 +55,6 @@ def add_EC(x1,y1,x2,y2):
 print add_EC(x1,y1,x2,y2)
 
 def subtract_EC(x1,y1,x2,y2):
-
     x2,y2 = neg_pts_EC(x2,y2)
     x_sub,y_sub = add_EC(x1,y1,x2,y2)
 
