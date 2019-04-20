@@ -18,12 +18,14 @@ def check_EC(x,y): #function to check if given co-ordinates are part of EC or no
 
 
 def inv_mod(x):
+    # p,a,b = read_EC_param()
     if x % p == 0 :
        return ("Inverse does not exist ")
     return pow(x,p-2,p)
 
 
 def read_EC_point():
+
     x = int(raw_input("enter x "))
     y = int(raw_input("enter y "))
 
@@ -31,7 +33,8 @@ def read_EC_point():
 
 p,a,b = 59,17,5
 
-def add_EC(x1,y1,x2,y2):    
+def add_EC(x1,y1,x2,y2):
+    # p,a,b = read_EC_param()    
     if (x1 == 0 and y1 == 0 ): #ie one of the points is Origin
         return x2, y2
     elif (x2 == 0 and y2 == 0): #if the second pt is 0,0
@@ -48,11 +51,14 @@ def add_EC(x1,y1,x2,y2):
     return (x_new, y_new)
 
 def subtract_EC(x1,y1,x2,y2): #add the inverse of the point
-    y2 = (y2 * -1) % p
+    # p,a,b = read_EC_param()
+    y2 = (y2 * -1) % p #finding neg of the y - cord
     x_sub,y_sub = add_EC(x1,y1,x2,y2)
     return x_sub, y_sub
 
-def multiply_EC(k, x1,y1): #use the point doubling method
+def naive_multiply_EC(k, x1,y1): #use the point doubling method
+    #use this if you want to wait for fifteen mins. So maybe don't use this.
+    # p,a,b = read_EC_param()
     slope = (3*x1*x1 + a) * inv_mod(2 * y1) #pt doubling method
     x_new = (pow(slope,2) - x1 - x1)%p
     y_new = (slope * (x1-x_new) - y1)%p
@@ -61,10 +67,30 @@ def multiply_EC(k, x1,y1): #use the point doubling method
         x_new, y_new = add_EC(x1,y1,x_new, y_new) #simple addition   
     return x_new,y_new
 
+def multiply_EC(k,x1,y1):
+    ans_x, ans_y = 0,0
+    # p,a,b = read_EC_param()
+    bit_k = bin(k)
+    bit_k = bit_k[2:]
+    temp_x, temp_y = x1, y1
+    bit_k = str(bit_k)
+    bit_k = bit_k[::-1]
+    for i in bit_k:
+        if i == '1':
+            ans_x, ans_y = add_EC(ans_x, ans_y, temp_x, temp_y)
 
-print add_EC(8,2,8,2)
-for i in range(0,1000):
-    print i
-    print multiply_EC(i,8,2)
+        temp_x ,temp_y = add_EC(temp_x, temp_y, temp_x, temp_y)    
+    return ans_x, ans_y
+
+
+def return_EC_pt(x): #implement Shanks Algorithm
+    p,a,b = read_EC_param()
+    y = 0
+    while (check_EC(x,y)!= True):
+        y +=1
+    return y
+
+print return_EC_pt(8)
+
 
 
