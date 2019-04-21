@@ -84,13 +84,51 @@ def multiply_EC(k,x1,y1):
 
 
 def return_EC_pt(x): #implement Shanks Algorithm
-    p,a,b = read_EC_param()
-    y = 0
-    while (check_EC(x,y)!= True):
-        y +=1
-    return y
+    # p,a,b = read_EC_param()
+    p,a,b = 59,17,5
+    u = 0
+    a = (x**3 + a*x + b)
+    #check if it is a QR
+    if (pow(a, (p-1)/2, p) == 1): #Eulers criterion
+        pass
+    else :
+        return ("y cord does not exist")
 
-print return_EC_pt(8)
+    QR_flag = True
+    
+    while (QR_flag == True):
+        u +=1
+        if (pow(u, (p-1)/2, p) != 1): #Eulers criterion
+            QR_flag = False 
+    s = 0
+    term = p-1    
+    while (term % 2 == 0):
+        s +=1 
+        term = term/2
 
+    t = term
+    k = s
+    z = pow(u, t, p)
+    x = pow(a, (t+1)/2, p)
+    b = pow(a, t, p)
+    while (b != 1 % p):
+        m = 1
+        term = b**(2**m)
+        while ((term - 1) % p != 0):
+            m +=1
+
+        y = pow(2, (k-m-1), p)
+        z = pow(y,2,p)
+        b = b*z % p
+        x = x*y % p
+        k = m
+    return x
+
+y =  return_EC_pt(15)
+print y
+print check_EC(15, y)
+
+    #find the sqrt of a
+   
 
 
