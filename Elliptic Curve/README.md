@@ -15,3 +15,5 @@
 * **multiply_EC(k, x1, y1)** - Multiplies (x1,y1) k times
 * **neg_EC(x1,y1)** - Gives the negation of a given point x1,y1
 * **return_EC_pt(x)** - Implements Shanks algo to return the y coordinate of a given x, on the EC.
+
+Collaborators : Vineet Reddy
