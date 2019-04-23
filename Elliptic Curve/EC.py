@@ -18,7 +18,7 @@ def check_EC(x,y): #function to check if given co-ordinates are part of EC or no
 
 
 def inv_mod(x):
-    # p,a,b = read_EC_param()
+    p,a,b = read_EC_param()
     if x % p == 0 :
        return ("Inverse does not exist ")
     return pow(x,p-2,p)
