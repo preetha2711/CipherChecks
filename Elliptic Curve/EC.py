@@ -13,8 +13,8 @@ def read_EC_param():
 
 
 def check_EC(x,y): #function to check if given co-ordinates are part of EC or not
-    # p,a,b = read_EC_param()    
-    return ((y**2 - (x**3 + a*x + b)) % p == 0 and 0 <= x < p and 0 <= y < p)
+    p,a,b = read_EC_param()    
+    return ((y**2 - (x**3 + a*x + b)) % p == 0 )
 
 
 def inv_mod(x):
@@ -25,16 +25,15 @@ def inv_mod(x):
 
 
 def read_EC_point():
-
     x = int(raw_input("enter x "))
     y = int(raw_input("enter y "))
-
     return x,y
 
-p,a,b = 59,17,5
+def write_EC_point(x1, y1):
+    print x1, y1
 
 def add_EC(x1,y1,x2,y2):
-    # p,a,b = read_EC_param()    
+    p,a,b = read_EC_param()    
     if (x1 == 0 and y1 == 0 ): #ie one of the points is Origin
         return x2, y2
     elif (x2 == 0 and y2 == 0): #if the second pt is 0,0
@@ -51,14 +50,14 @@ def add_EC(x1,y1,x2,y2):
     return (x_new, y_new)
 
 def subtract_EC(x1,y1,x2,y2): #add the inverse of the point
-    # p,a,b = read_EC_param()
+    p,a,b = read_EC_param()
     y2 = (y2 * -1) % p #finding neg of the y - cord
     x_sub,y_sub = add_EC(x1,y1,x2,y2)
     return x_sub, y_sub
 
 def naive_multiply_EC(k, x1,y1): #use the point doubling method
     #use this if you want to wait for fifteen mins. So maybe don't use this.
-    # p,a,b = read_EC_param()
+    p,a,b = read_EC_param()
     slope = (3*x1*x1 + a) * inv_mod(2 * y1) #pt doubling method
     x_new = (pow(slope,2) - x1 - x1)%p
     y_new = (slope * (x1-x_new) - y1)%p
@@ -69,12 +68,12 @@ def naive_multiply_EC(k, x1,y1): #use the point doubling method
 
 def multiply_EC(k,x1,y1):
     ans_x, ans_y = 0,0
-    # p,a,b = read_EC_param()
+    p,a,b = read_EC_param()
     bit_k = bin(k)
     bit_k = bit_k[2:]
     temp_x, temp_y = x1, y1
     bit_k = str(bit_k)
-    bit_k = bit_k[::-1]
+    bit_k = bit_k[::-1] #from least significant bit to most
     for i in bit_k:
         if i == '1':
             ans_x, ans_y = add_EC(ans_x, ans_y, temp_x, temp_y)
@@ -82,12 +81,14 @@ def multiply_EC(k,x1,y1):
         temp_x ,temp_y = add_EC(temp_x, temp_y, temp_x, temp_y)    
     return ans_x, ans_y
 
+def neg_EC(x1,y1):
+    p,a,b = read_EC_param()
+    return x1, (-1*y1)%p 
 
 def return_EC_pt(x): #implement Shanks Algorithm
-    # p,a,b = read_EC_param()
-    p,a,b = 59,17,5
+    p,a,b = read_EC_param()
     u = 0
-    a = (x**3 + a*x + b)
+    a = (x**3 + a*x + b) % p
     #check if it is a QR
     if (pow(a, (p-1)/2, p) == 1): #Eulers criterion
         pass
@@ -124,11 +125,9 @@ def return_EC_pt(x): #implement Shanks Algorithm
         k = m
     return x
 
-y =  return_EC_pt(15)
-print y
-print check_EC(15, y)
 
-    #find the sqrt of a
+
+
    
 
 
