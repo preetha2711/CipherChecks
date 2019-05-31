@@ -1,4 +1,4 @@
-El Gamal 
+## El Gamal ##
 
 1. Run 'Elgamal_Complete'. This will generate primes of the form p, q = 2p + 1, along with our public and private keys.
 2. 'public_key.txt' has (q,g,h) in separate lines.
