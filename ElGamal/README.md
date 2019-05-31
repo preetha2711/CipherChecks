@@ -8,7 +8,7 @@
 6. Next, run 'ElGamal_Signature.py'. This creates a text file called 'sign.txt', containing the signature and r. 
 7. Run 'ElGamal_Dec.py'. This will print True or False on the terminal according to whether the signature matches or not. 
 
-##Existential Forgery ##
+## Existential Forgery ##
 
 8. Run 'ElGamal_Existential_Forgery.py'. This will write the forged signature to 'forged_sign_', and the forged plain text to 'plain_text_forgery'
 9. To verify this, run 'ElGamal_Verify_Existential_Forgery.py'. You will get 'True' if the signature matches, and 'False' otherwise
