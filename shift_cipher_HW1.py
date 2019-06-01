@@ -1,3 +1,8 @@
+
+file = open("cipher.txt","r")
+f_write = open("possible_answers.txt","w")
+content = file.read()
+array = [str(content)]
 array = ['hgnodxnthmsdqbdossghrrdbqdssqzmrlhrrhnmvhsgntszmxdqqnqsghrsqz mrlhrrhnmgzrsqzudkkdczlhkkhnmkhfgsxdzqrsnhmenqlxntsgzsvdzqdbn lhmfrnnm']
 ciphertxt = []
 for i in range(0,len(array[0])):
@@ -6,7 +11,9 @@ letter_num = {}
 for i in range(97,123):
      letter_num[(i-97)] = chr(i)
 
-#0:a,1:b... = letter_num
+#the letter_num array format is as follows : 
+#0:a,1:b, 2:c...
+
 
 #making the shift cipher
 
@@ -22,5 +29,6 @@ def shift_cipher(string):
         poss_ans.append(temp_str)
 
     return poss_ans
-print shift_cipher(array[0])
-
+possible_answers = shift_cipher(array[0])
+f_write.write(str(possible_answers))
+ 
