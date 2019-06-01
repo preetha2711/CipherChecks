@@ -108,35 +108,9 @@ for j in range(1,7):
 
 
 
- 
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#fre_anal returns an array with key numberr of elements
+#each number is the most frequently occuring letter in that substring
+#assuming that the most frequent letter is e
 
 
 def freq_anal(array):
@@ -160,9 +134,6 @@ def freq_anal(array):
     return temp_arr
          
         
-#fre_anal returns an array with key numberr of elements
-#each number is the most frequently occuring letter in that substring
-#assuming that the most frequent letter is e
 
 # print frequent
 
