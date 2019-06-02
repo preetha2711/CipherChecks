@@ -109,6 +109,7 @@ for j in range(1,7):
     f_write.write(str(j))
     f_write.write('\n')
     f_write.write(str(regroup(temp_str, to_shift, j)))
+    f_write.write('\n')
     # print j
     # print regroup(temp_str, to_shift,j)
 
